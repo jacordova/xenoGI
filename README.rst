@@ -4,61 +4,13 @@ xenoGI
 
 Code for reconstructing genome evolution in clades of microbes.
 
-Requirements
-------------
+Requirements and Installation
+-------------------------------
+See original for requirements, installation instructions and example data: https://github.com/ecbush/xenoGI.
 
-* NCBI blast+
-
-  We need blastp and makeblastdb executables (ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/).
-
-* MUSCLE V5 (https://www.drive5.com/muscle/). For creating protein or DNA alignments.
-
-* FastTree (http://www.microbesonline.org/fasttree/). For making gene trees.
-
-* GeneRax (https://github.com/BenoitMorel/GeneRax). For making (species tree aware) gene trees. This is optional but recommended.
-  
-* Python 3
-
-* Python package dependencies
-
-  - Biopython (http://biopython.org/). This is for parsing genbank files and can be installed using pip:
-      ``pip3 install biopython``
-
-  - Parasail (https://github.com/jeffdaily/parasail). This is an optimized alignment library, used in calculating scores between proteins. It can also be installed using pip:
-      ``pip3 install parasail``
-
-  - Numpy (http://www.numpy.org/).
-      ``pip3 install numpy``
-    
-  - Scipy (https://www.scipy.org/).
-    ``pip3 install scipy``
-
-(The pip you use needs to correspond to a version of Python 3. In some cases it may just be called pip instead of pip3).
-
-* Additional dependencies
-
-  If you make use of the ``makeSpeciesTree`` flag or ``xlMode.py``, you will also need the following
-
-  - ASTRAL (https://github.com/smirarab/ASTRAL/).
-
-* Comments on platforms.
-
-  xenoGI is developed on Linux. The docker image (linked below) is the easiest way to run on Mac and Windows.
-
-Installation
-------------
-
-Via pip::
-
-  pip3 install xenoGI
-
-(You will separately need to install blast+, MUSCLE, FastTree, and optionally GeneRax and ASTRAL.)
-
-Via docker. For some instructions on using docker, go here:
+I installed via docker. For some instructions on using docker, go here:
 
   https://hub.docker.com/r/ecbush/xenogi
-
-Using docker, xenoGI get's run within a virtual machine. This is nice because you don't have to worry about all the dependencies above (they're provided in our image). This does come at some cost in terms of performance.
   
 Citation
 --------
@@ -71,25 +23,16 @@ Liu J, Mawhorter R, Liu I, Santichaivekin S, Bush E, Libeskind-Hadas R. Maximum 
 
 Liu N, Gonzalez TA, Fischer J, Hong C, Johnson M, Mawhorter R, Mugnatto F, Soh R, Somji S, Wirth JS, Libeskind-Hadas R and Bush EC. xenoGI 3: using the DTLOR model to reconstruct the evolution of gene families in clades of microbes. BMC bioinformatics. 24(1). 2023.
 
-How to use
-----------
-
-An ``example/`` directory is included in this repository.
-
-The sections below give some instructions about how to run xenoGI on this example. You can use this to make sure you've installed it properly and so forth. The github repository also contains a TUTORIAL which you can run through after completing the README.
-
-The basic method works on a set of species with known phylogenetic relationships. In the example, these species are: E. coli K12, E. coli ATCC 11775, E. fergusonii and S. bongori. In cases where you don't know the species tree, xenoGI has methods to help you reconstruct it.
-
 Required files
 ~~~~~~~~~~~~~~
 
 The working directory must contain:
 
-* A parameter file. In the provided ``example/`` directory this is called ``params.py``.
+* A parameter file. We have two parameter files "params_local.py" and "params_docker.py." These are essentially identical but have some small changes in program locations because one of the steps doesn't work locally and has to be done via docker.
 
-* A newick format tree representing the relationships of the strains. In the example this is called ``example.tre``. Note that branch lengths are not used in xenoGI, and ``example.tre`` does not contain branch lengths. Also note that internal nodes should be given names in this tree. In the example.tre we label them s0, s1 etc. The parameter ``speciesTreeFN`` in ``params.py`` has the path to this tree file. If a strain tree is not available, xenoGI has some accessory methods, described below, to help obtain one.
+* A newick format tree representing the relationships of the strains. Note that branch lengths are not used in xenoGI. Also note that internal nodes should be given names in this tree, we label them s0, s1 etc. The parameter ``speciesTreeFN`` in ``params.py`` has the path to this tree file. If a strain tree is not available, xenoGI has some accessory methods, described below, to help obtain one.
 
-* A subdirectory of sequence files. In the example, this is called ``ncbi/``. Contained in this subdirectory will be genbank (gbff) files for the species. The parameter ``genbankFilePath`` in ``params.py`` has the path to these files.
+* A subdirectory of sequence files. Contained in this subdirectory will be genbank (gbff) files for the strains. The parameter ``genbankFilePath`` in ``params.py`` has the path to these files.
 
 Naming of strains
 ~~~~~~~~~~~~~~~~~
